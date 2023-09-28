@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React from 'react';
 import {
   View,
   Text,
@@ -24,41 +24,19 @@ const CitiesScreen = ({navigation}) => {
               flex: 1,
             },
           ]}>
-          <Text style={{color: '#FFBD61', fontSize: 24, fontWeight: 'bold'}}>
-            {' '}
-            <Image
-              source={require('../assets/img/icon-saved-location.png')}
-            />{' '}
-            Favorite location
-          </Text>
-          <View
-            style={{
-              backgroundColor: '#E3EFEF',
-              padding: 30,
-              justifyContent: 'center',
-              alignItems: 'center',
-              marginVertical: 10,
-            }}>
-            <Text style={{color: '#333', fontSize: 14}}>
-              No favorite location
-            </Text>
+          <View style={styles.sectionTitleContainer}>
+            <Image source={require('../assets/img/icon-saved-location.png')} />
+            <Text style={styles.sectionTitle}>Favorite location</Text>
           </View>
-          <Text style={{color: '#FFBD61', fontSize: 24, fontWeight: 'bold'}}>
-            {' '}
-            <Image
-              source={require('../assets/img/icon-saved-location.png')}
-            />{' '}
-            Saved location
-          </Text>
-          <View
-            style={{
-              backgroundColor: '#E3EFEF',
-              padding: 30,
-              justifyContent: 'center',
-              alignItems: 'center',
-              marginVertical: 10,
-            }}>
-            <Text style={{color: '#333', fontSize: 14}}>No saved location</Text>
+          <View style={styles.sectionContainer}>
+            <Text style={styles.sectionEmptyText}>No favorite location</Text>
+          </View>
+          <View style={styles.sectionTitleContainer}>
+            <Image source={require('../assets/img/icon-saved-location.png')} />
+            <Text style={styles.sectionTitle}>Saved location</Text>
+          </View>
+          <View style={styles.sectionContainer}>
+            <Text style={styles.sectionEmptyText}>No saved location</Text>
           </View>
         </View>
         <View style={styles.navigationBar}>
@@ -83,6 +61,28 @@ const CitiesScreen = ({navigation}) => {
 };
 
 const styles = StyleSheet.create({
+  sectionTitleContainer:{
+    display: 'flex',
+    flexDirection: 'row',
+    gap: 10,
+    alignItems: 'center'
+  },
+  sectionTitle: {
+    color: '#FFBD61',
+    fontSize: 24,
+    fontWeight: 'bold',
+  },
+  sectionContainer: {
+    backgroundColor: '#E3EFEF',
+    padding: 30,
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginVertical: 10,
+  },
+  sectionEmptyText: {
+    color: '#333',
+    fontSize: 14,
+  },
   navigationBar: {
     position: 'absolute',
     bottom: 0,

@@ -1,7 +1,7 @@
-import React, {useState} from 'react';
+import React from 'react';
+import {WebView} from 'react-native-webview';
 import {
   View,
-  Text,
   StyleSheet,
   SafeAreaView,
   ScrollView,
@@ -10,21 +10,37 @@ import {
 } from 'react-native';
 
 const MapsScreen = ({navigation}) => {
-    const mapUrl = 'https://tile.openweathermap.org/map/temp_new/1/1/1.png?appid=e9dc99afbc546d6cc751364d2fe638e6'
+  const html = `
+    <!DOCTYPE html>
+    <html>
+      <head>
+        <title>Weather Map</title>
+        <link
+          rel="stylesheet"
+          href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css"
+        />
+        <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
+      </head>
+      <body>
+        <div id="map" style="height: 100vh;"></div>
+        <script>
+          var map = L.map('map').setView([0, 0], 3);
+          L.tileLayer('https://tile.openweathermap.org/map/{layer}/{z}/{x}/{y}.png?appid=e9dc99afbc546d6cc751364d2fe638e6', {
+            maxZoom: 19,
+            layer: 'temp_new',
+          }).addTo(map);
+        </script>
+      </body>
+    </html>
+  `;
+
   return (
     <SafeAreaView style={{flex: 1}}>
       <ScrollView
         contentContainerStyle={{flexGrow: 1}}
         contentInsetAdjustmentBehavior="automatic"
         style={[{height: '100%'}]}>
-        <View
-          style={[
-            {
-              paddingVertical: 20,
-              paddingHorizontal: 20,
-              flex: 1,
-            },
-          ]}></View>
+        <WebView source={{html}} style={{flex: 1}} />
         <View style={styles.navigationBar}>
           <TouchableOpacity onPress={() => navigation.navigate('Home')}>
             <Image source={require('../assets/img/navbar/icon-home.png')} />

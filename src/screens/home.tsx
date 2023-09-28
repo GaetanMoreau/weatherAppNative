@@ -28,7 +28,7 @@ const HomeScreen = ({navigation}) => {
     fetch(search)
       .then(response => {
         if (!response.ok) {
-          throw new Error('search Network response was not ok');
+          throw new Error('Network response was not ok');
         }
         return response.json();
       })
@@ -37,13 +37,9 @@ const HomeScreen = ({navigation}) => {
           const firstCity = data[0];
           const {lat, lon} = firstCity;
 
-          console.log('Latitude:', lat);
-          console.log('Longitude:', lon);
-
           const weatherApiUrl =
-            `https://api.openweathermap.org/data/2.5/forecast?lat=${lat}&lon=${lon}&appid=` +
+            `https://api.openweathermap.org/data/2.5/forecast?lat=${lat}&lon=${lon}&units=metric&appid=` +
             apikey;
-          console.log(weatherApiUrl);
           fetch(weatherApiUrl)
             .then(response => {
               if (!response.ok) {
@@ -52,7 +48,6 @@ const HomeScreen = ({navigation}) => {
               return response.json();
             })
             .then(weatherData => {
-              console.log('Weather Data:', weatherData);
               setWeatherData(weatherData);
               navigation.navigate('Weather', {weatherData});
             })
@@ -74,14 +69,13 @@ const HomeScreen = ({navigation}) => {
         style={[{height: '100%'}]}>
         <View
           style={[
-            styles.sectionDescription,
             {
               paddingVertical: 40,
               paddingHorizontal: 20,
               flex: 1,
             },
           ]}>
-          <Text style={{textAlign: 'center'}}>
+          <Text style={[styles.homeDescription]}>
             Welcome to MyWeather ! You don't have any cities in your favorites,
             you can search for the weather of the desired city by using the
             search bar.
@@ -118,21 +112,11 @@ const HomeScreen = ({navigation}) => {
 };
 
 const styles = StyleSheet.create({
-  sectionContainer: {
-    marginTop: 32,
-    paddingHorizontal: 24,
-  },
-  sectionTitle: {
-    fontSize: 24,
-    fontWeight: '600',
-  },
-  sectionDescription: {
-    fontSize: 18,
+  homeDescription: {
+    fontSize: 16,
     fontWeight: '400',
     color: '#000',
-  },
-  highlight: {
-    fontWeight: '700',
+    textAlign: 'center',
   },
   searchInput: {
     borderRadius: 20,

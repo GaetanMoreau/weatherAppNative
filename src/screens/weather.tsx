@@ -6,6 +6,7 @@ import {
   SafeAreaView,
   ScrollView,
   Image,
+  TouchableOpacity,
 } from 'react-native';
 import {useRoute} from '@react-navigation/native';
 
@@ -32,7 +33,7 @@ const WeatherScreen = ({navigation}) => {
     }
   };
 
-   const formattedDate = formatDate(weather.dt_txt);
+  const formattedDate = formatDate(weather.dt_txt);
 
   return (
     <SafeAreaView style={{flex: 1, backgroundColor: '#FFF'}}>
@@ -56,26 +57,39 @@ const WeatherScreen = ({navigation}) => {
             />
             <View style={styles.weatherDetails}>
               <Text style={styles.date}>{formattedDate}</Text>
-              <Text style={styles.temperature}>{`${weather.main.temp}°`}</Text>
+              <Text style={styles.temperature}>{`${Math.floor(
+                weather.main.temp,
+              )}°`}</Text>
               <Text style={styles.description}>
                 {weather.weather[0].description}
               </Text>
             </View>
             <View style={styles.additionalInfo}>
               <View style={styles.additionalInfoItem}>
-                <Image source={require('../assets/img/icon-wind.png')} />
+                <Image
+                  style={styles.infoImage}
+                  source={require('../assets/img/icon-wind.png')}
+                />
                 <Text
-                  style={styles.infoText}>{`${weather.wind.speed} km/h`}</Text>
+                  style={styles.infoText}>{`${weather.wind.speed} m/s`}</Text>
               </View>
               <View style={styles.additionalInfoItem}>
-                <Image source={require('../assets/img/icon-humidity.png')} />
+                <Image
+                  style={styles.infoImage}
+                  source={require('../assets/img/icon-humidity.png')}
+                />
                 <Text
                   style={styles.infoText}>{`${weather.main.humidity}%`}</Text>
               </View>
               <View style={styles.additionalInfoItem}>
-                <Image source={require('../assets/img/icon-thermometer.png')} />
+                <Image
+                  style={styles.infoImage}
+                  source={require('../assets/img/icon-thermometer.png')}
+                />
                 <Text style={styles.infoText}>
-                  {`${weather.main.temp_min}°/${weather.main.temp_max}°`}
+                  {`${Math.floor(weather.main.temp_min)}°/${Math.floor(
+                    weather.main.temp_max,
+                  )}°`}
                 </Text>
               </View>
             </View>
@@ -100,13 +114,28 @@ const WeatherScreen = ({navigation}) => {
                       }}
                       style={styles.weatherImageList}
                     />
-                    <Text
-                      style={styles.date}>{`${weatherItem.main.temp}°`}</Text>
+                    <Text style={styles.date}>{`${Math.floor(
+                      weatherItem.main.temp,
+                    )}°`}</Text>
                   </View>
                 </View>
               );
             })}
           </View>
+        </View>
+        <View style={styles.navigationBar}>
+          <TouchableOpacity onPress={() => navigation.navigate('Home')}>
+            <Image source={require('../assets/img/navbar/icon-home.png')} />
+          </TouchableOpacity>
+          <TouchableOpacity onPress={() => navigation.navigate('Cities')}>
+            <Image source={require('../assets/img/navbar/icon-location.png')} />
+          </TouchableOpacity>
+          <TouchableOpacity onPress={() => navigation.navigate('Maps')}>
+            <Image source={require('../assets/img/navbar/icon-map.png')} />
+          </TouchableOpacity>
+          <TouchableOpacity onPress={() => navigation.navigate('Settings')}>
+            <Image source={require('../assets/img/navbar/icon-settings.png')} />
+          </TouchableOpacity>
         </View>
       </ScrollView>
     </SafeAreaView>
@@ -133,6 +162,10 @@ const styles = StyleSheet.create({
     color: '#FFBD61',
     fontSize: 14,
   },
+  infoImage: {
+    width: 22,
+    height: 22,
+  },
   weatherInfo: {
     flexDirection: 'row',
     justifyContent: 'space-between',
@@ -154,29 +187,31 @@ const styles = StyleSheet.create({
   },
   date: {
     color: '#000',
-    fontSize: 16,
+    fontSize: 18,
   },
   temperature: {
     color: '#000',
-    fontSize: 24,
+    fontSize: 36,
+    fontWeight: '700',
   },
   description: {
     color: '#000',
-    fontSize: 16,
+    fontSize: 18,
     textTransform: 'capitalize',
   },
   additionalInfo: {
     flexDirection: 'column',
+    gap: 10,
   },
   additionalInfoItem: {
     display: 'flex',
     flexDirection: 'row',
     alignItems: 'center',
-    gap: 10,
+    gap: 8,
   },
   infoText: {
     color: '#000',
-    fontSize: 16,
+    fontSize: 18,
   },
   weatherImage: {
     width: 100,
@@ -184,6 +219,19 @@ const styles = StyleSheet.create({
   weatherImageList: {
     width: 40,
     height: 40,
+  },
+  navigationBar: {
+    position: 'absolute',
+    bottom: 0,
+    display: 'flex',
+    flexDirection: 'row',
+    left: 0,
+    right: 0,
+    backgroundColor: '#78D5D7',
+    paddingVertical: 12,
+    paddingHorizontal: 20,
+    alignItems: 'center',
+    justifyContent: 'space-between',
   },
 });
 
