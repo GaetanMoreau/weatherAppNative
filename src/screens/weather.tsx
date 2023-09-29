@@ -10,12 +10,12 @@ import {
 } from 'react-native';
 import {useRoute} from '@react-navigation/native';
 
-const WeatherScreen = ({navigation}) => {
+const WeatherScreen = ({navigation}:any) => {
   const route = useRoute();
-  const {weatherData} = route.params;
+  const {weatherData}:any = route.params;
   const weather = weatherData.list[0];
 
-  const formatDate = dateString => {
+  const formatDate = (dateString:string) => {
     const date = new Date(dateString);
     const today = new Date();
 
@@ -95,7 +95,8 @@ const WeatherScreen = ({navigation}) => {
             </View>
           </View>
           <View style={styles.weatherInfoList}>
-            {weatherData.list.slice(0, 6).map((weatherItem, index) => {
+            {weatherData.list.slice(0, 6).map((weatherItem:any, index:number) => {
+              console.log(weatherItem, index)
               const dateTime = new Date(weatherItem.dt_txt);
               const hour = dateTime.getHours();
               const minute = dateTime.getMinutes();
@@ -105,7 +106,7 @@ const WeatherScreen = ({navigation}) => {
               }${minute}`;
 
               return (
-                <View key={index} style={styles.weatherItem}>
+                <View key={index}>
                   <View style={styles.weatherDetailsList}>
                     <Text style={styles.date}>{formattedTime}</Text>
                     <Image

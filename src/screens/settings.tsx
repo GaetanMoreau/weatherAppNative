@@ -8,7 +8,7 @@ import {
   Image,
 } from 'react-native';
 
-const SettingsScreen = ({navigation}) => {
+const SettingsScreen = ({navigation}:any) => {
   return (
     <SafeAreaView style={{flex: 1}}>
       <ScrollView

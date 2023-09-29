@@ -9,7 +9,7 @@ import {
   Image,
 } from 'react-native';
 
-const MapsScreen = ({navigation}) => {
+const MapsScreen = ({navigation}:any) => {
   const html = `
     <!DOCTYPE html>
     <html>

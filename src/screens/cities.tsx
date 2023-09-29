@@ -9,7 +9,7 @@ import {
   Image,
 } from 'react-native';
 
-const CitiesScreen = ({navigation}) => {
+const CitiesScreen = ({navigation}:any) => {
   return (
     <SafeAreaView style={{flex: 1}}>
       <ScrollView
