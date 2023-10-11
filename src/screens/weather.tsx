@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useContext} from 'react';
 import {
   View,
   Text,
@@ -9,13 +9,28 @@ import {
   TouchableOpacity,
 } from 'react-native';
 import {useRoute} from '@react-navigation/native';
+import {WeatherApiContext} from '../components/WeatherApiContext';
 
-const WeatherScreen = ({navigation}:any) => {
+const WeatherScreen = ({navigation}: any) => {
   const route = useRoute();
-  const {weatherData}:any = route.params;
+  const {weatherData, weatherApiUrl}: any = route.params;
   const weather = weatherData.list[0];
 
-  const formatDate = (dateString:string) => {
+  const {weatherApiUrls, setWeatherApiUrls} = useContext(WeatherApiContext);
+
+  const handleAddToYourLocation = () => {
+    if (!weatherApiUrls.includes(weatherApiUrl)) {
+      setWeatherApiUrls(prevUrls => [...prevUrls, weatherApiUrl]);
+    }
+  };
+
+  const handleRemoveFromYourLocation = () => {
+    setWeatherApiUrls(prevUrls =>
+      prevUrls.filter(url => url !== weatherApiUrl),
+    );
+  };
+
+  const formatDate = (dateString: string) => {
     const date = new Date(dateString);
     const today = new Date();
 
@@ -46,7 +61,17 @@ const WeatherScreen = ({navigation}:any) => {
             <Text style={styles.locationText}>
               {`${weatherData.city.name}, ${weatherData.city.country}`}
             </Text>
-            <Text style={styles.addToLocation}>Add to your location</Text>
+            {weatherApiUrls.includes(weatherApiUrl) ? (
+              <TouchableOpacity onPress={handleRemoveFromYourLocation}>
+                <Text style={styles.addToLocation}>
+                  Remove from your location
+                </Text>
+              </TouchableOpacity>
+            ) : (
+              <TouchableOpacity onPress={handleAddToYourLocation}>
+                <Text style={styles.addToLocation}>Add to your location</Text>
+              </TouchableOpacity>
+            )}
           </View>
           <View style={styles.weatherInfo}>
             <Image
@@ -95,32 +120,34 @@ const WeatherScreen = ({navigation}:any) => {
             </View>
           </View>
           <View style={styles.weatherInfoList}>
-            {weatherData.list.slice(0, 6).map((weatherItem:any, index:number) => {
-              const dateTime = new Date(weatherItem.dt_txt);
-              const hour = dateTime.getHours();
-              const minute = dateTime.getMinutes();
+            {weatherData.list
+              .slice(0, 6)
+              .map((weatherItem: any, index: number) => {
+                const dateTime = new Date(weatherItem.dt_txt);
+                const hour = dateTime.getHours();
+                const minute = dateTime.getMinutes();
 
-              const formattedTime = `${hour}h${
-                minute < 10 ? '0' : ''
-              }${minute}`;
+                const formattedTime = `${hour}h${
+                  minute < 10 ? '0' : ''
+                }${minute}`;
 
-              return (
-                <View key={index}>
-                  <View style={styles.weatherDetailsList}>
-                    <Text style={styles.date}>{formattedTime}</Text>
-                    <Image
-                      source={{
-                        uri: `https://openweathermap.org/img/wn/${weatherItem.weather[0].icon}@2x.png`,
-                      }}
-                      style={styles.weatherImageList}
-                    />
-                    <Text style={styles.date}>{`${Math.floor(
-                      weatherItem.main.temp,
-                    )}°`}</Text>
+                return (
+                  <View key={index}>
+                    <View style={styles.weatherDetailsList}>
+                      <Text style={styles.date}>{formattedTime}</Text>
+                      <Image
+                        source={{
+                          uri: `https://openweathermap.org/img/wn/${weatherItem.weather[0].icon}@2x.png`,
+                        }}
+                        style={styles.weatherImageList}
+                      />
+                      <Text style={styles.date}>{`${Math.floor(
+                        weatherItem.main.temp,
+                      )}°`}</Text>
+                    </View>
                   </View>
-                </View>
-              );
-            })}
+                );
+              })}
           </View>
         </View>
         <View style={styles.navigationBar}>

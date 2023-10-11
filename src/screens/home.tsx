@@ -19,7 +19,8 @@ const HomeScreen = ({navigation}: any) => {
   const [searchText, setSearchText] = useState('');
   const [searchUrl, setSearchUrl] = useState('');
   const [weatherData, setWeatherData] = useState(null);
-  const [filteredData, setFilteredData] = useState([]);
+  const [filteredData, setFilteredData] = useState<string[]>([]);
+  const [inputText, setInputText] = useState('');
 
   const {unit} = useContext(TemperatureUnitContext);
 
@@ -63,6 +64,7 @@ const HomeScreen = ({navigation}: any) => {
       item.toLowerCase().startsWith(text.toLowerCase()),
     );
     setFilteredData(filteredData);
+    setInputText(text);
   };
 
   const handleSearch = (searchText: string) => {
@@ -95,7 +97,7 @@ const HomeScreen = ({navigation}: any) => {
             })
             .then(weatherData => {
               setWeatherData(weatherData);
-              navigation.navigate('Weather', {weatherData});
+              navigation.navigate('Weather', {weatherData, weatherApiUrl});
             })
             .catch(error => {
               console.error('Weather Fetch Error:', error);
@@ -117,14 +119,13 @@ const HomeScreen = ({navigation}: any) => {
           },
         ]}>
         <Text style={[styles.homeDescription]}>
-          Welcome to MyWeather ! You don't have any cities in your favorites,
-          you can search for the weather of the desired city by using the search
-          bar.
+          Welcome to MyWeather ! You can search for the weather of the desired
+          city by using the search bar or browse your favorite cities.
         </Text>
         <TextInput
           style={styles.searchInputText}
           onChangeText={handleInputChange}
-          value={this.inputText}
+          value={inputText}
           placeholder="Search for a city (France only)"
         />
         {filteredData.length > 0 && (
