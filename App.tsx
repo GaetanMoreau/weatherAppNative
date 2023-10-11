@@ -5,39 +5,23 @@
  * @format
  */
 
-import React,  { useState } from 'react';
-import { NavigationContainer } from '@react-navigation/native';
-import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import React, {useState} from 'react';
 import type {PropsWithChildren} from 'react';
 import Navigation from './src/Navigation';
-import {
-  SafeAreaView,
-  ScrollView,
-  StatusBar,
-  StyleSheet,
-  Text,
-  useColorScheme,
-  View,
-  Image,
-  TextInput,
-  Button
-} from 'react-native';
-
-import {
-  Colors,
-  DebugInstructions,
-  Header,
-  LearnMoreLinks,
-  ReloadInstructions,
-} from 'react-native/Libraries/NewAppScreen';
+import {TemperatureUnitContext} from './src/components/TemperatureUnitContext';
 
 type SectionProps = PropsWithChildren<{
   title: string;
 }>;
 
 function App(): JSX.Element {
+  const [unit, setUnit] = useState<'metric' | 'imperial' | 'standard'>(
+    'metric',
+  );
   return (
-     <Navigation />
+    <TemperatureUnitContext.Provider value={{unit, setUnit}}>
+      <Navigation />
+    </TemperatureUnitContext.Provider>
   );
 }
 export default App;

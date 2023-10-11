@@ -96,7 +96,6 @@ const WeatherScreen = ({navigation}:any) => {
           </View>
           <View style={styles.weatherInfoList}>
             {weatherData.list.slice(0, 6).map((weatherItem:any, index:number) => {
-              console.log(weatherItem, index)
               const dateTime = new Date(weatherItem.dt_txt);
               const hour = dateTime.getHours();
               const minute = dateTime.getMinutes();

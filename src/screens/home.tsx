@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useContext, useState} from 'react';
 import {
   View,
   Text,
@@ -9,8 +9,9 @@ import {
   TouchableOpacity,
   FlatList,
 } from 'react-native';
+import {TemperatureUnitContext} from '../components/TemperatureUnitContext';
 
-const HomeScreen = ({navigation}:any) => {
+const HomeScreen = ({navigation}: any) => {
   const apiUrl = 'http://api.openweathermap.org/geo/1.0/direct?q=';
   const apiParameters = '&limit=5&appid=e9dc99afbc546d6cc751364d2fe638e6';
   const apiKey = 'e9dc99afbc546d6cc751364d2fe638e6';
@@ -19,6 +20,8 @@ const HomeScreen = ({navigation}:any) => {
   const [searchUrl, setSearchUrl] = useState('');
   const [weatherData, setWeatherData] = useState(null);
   const [filteredData, setFilteredData] = useState([]);
+
+  const {unit} = useContext(TemperatureUnitContext);
 
   interface Commune {
     nom: string;
@@ -81,7 +84,7 @@ const HomeScreen = ({navigation}:any) => {
           const {lat, lon} = firstCity;
 
           const weatherApiUrl =
-            `https://api.openweathermap.org/data/2.5/forecast?lat=${lat}&lon=${lon}&units=metric&appid=` +
+            `https://api.openweathermap.org/data/2.5/forecast?lat=${lat}&lon=${lon}&units=${unit}&appid=` +
             apiKey;
           fetch(weatherApiUrl)
             .then(response => {
